@@ -1,0 +1,25 @@
+{
+  "name": "Base gas tracker",
+  "description": "Displays the most recent gas prices from the Base network at 10-minute intervals",
+  "version": "0.0.2",
+  "manifest_version": 3,
+  "icons": {
+    "16": "images/base-icon.png",
+    "48": "images/base-icon.png",
+    "128": "images/base-icon.png"
+  },
+  "action": {
+    "default_title": "Base gas tracker",
+    "default_icon": "images/base-icon.png"
+  },
+  "host_permissions": [
+    "https://api.etherscan.io/"
+  ],
+  "permissions": [
+    "alarms"
+  ],
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  }
+}

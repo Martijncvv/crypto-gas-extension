@@ -1,0 +1,38 @@
+{
+  "name": "Base gas tracker",
+  "version": "0.0.2",
+  "description": "Base gas tracker",
+  "scripts": {
+    "start": "webpack --watch --progress --config webpack.dev.js",
+    "build": "webpack --watch --progress --config webpack.prod.js"
+  },
+  "author": "",
+  "devDependencies": {
+    "@types/chrome": "^0.0.233",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.3",
+    "fontsource-roboto": "^4.0.0",
+    "html-webpack-plugin": "^5.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "style-loader": "^3.3.2",
+    "terser-webpack-plugin": "^5.3.7",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^5.0.2",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.2",
+    "npm-check-updates": "^16.10.9",
+    "prettier": "^3.0.0",
+    "recharts": "^2.6.2"
+  }
+}
