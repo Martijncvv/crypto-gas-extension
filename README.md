@@ -8,3 +8,9 @@ an eye on gas prices for better transaction planning and cost estimation.
 <p align="center">
   <img src="base-tracker-preview-128-128.png" alt="Pudgy USD" width="200" >
 </p>
+
+
+Also check out my other Crypto Explorer Extension, 150+ daily users and 650+ installs.
+https://chromewebstore.google.com/detail/crypto-portfolio-blockcha/pkaheoacmbdgnemgmcdbekniooabcnmc?hl=en&authuser=0
+
+Looking for some specific feature? Reach out to me on X: @Marty_cFly
