@@ -5,3 +5,6 @@ within your browser. Utilizing the BaseScan API, it fetches the latest base gas 
 badge on the extension icon. This tool is invaluable for Ethereum enthusiasts, traders, and developers who need to keep
 an eye on gas prices for better transaction planning and cost estimation.
 
+<p align="center">
+  <img src="base-tracker-preview-128-128.png" alt="Pudgy USD" width="200" >
+</p>

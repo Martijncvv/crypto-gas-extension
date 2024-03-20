@@ -33,21 +33,33 @@
       }
       const response = await res.json();
       const gasPriceFirstTx = response.result[0]?.gasPrice;
+      let totalGasPrice = 0;
+      let counter = 0;
+
+      // get average gas price from the txs
+      response.result.forEach((tx) => {
+        console.log(tx.gasPrice);
+        totalGasPrice += parseInt(tx.gasPrice);
+        counter++;
+      });
+
+      let averageGasPrice = totalGasPrice / counter;
 
       // Display in Mwei, rounded down.
-      let gasPriceFirstTxInMwei = Math.floor(
-        parseInt(gasPriceFirstTx) / 100_000,
+      let averageGasPriceInMwei = Math.floor(
+        parseInt(averageGasPrice) / 100_000,
       );
-      if (!gasPriceFirstTxInMwei) {
+      if (!averageGasPriceInMwei) {
         throw new Error("Gas price not found");
       }
+
       chrome.action.setBadgeBackgroundColor({ color: [0, 79, 246, 255] });
 
-      if (gasPriceFirstTxInMwei > 1000) {
-        gasPriceFirstTxInMwei = `${(gasPriceFirstTxInMwei / 1000).toFixed(1)}k`;
+      if (averageGasPriceInMwei > 1000) {
+        averageGasPriceInMwei = `${(averageGasPriceInMwei / 1000).toFixed(1)}k`;
       }
 
-      chrome.action.setBadgeText({ text: `${gasPriceFirstTxInMwei}` });
+      chrome.action.setBadgeText({ text: `${averageGasPriceInMwei}` });
     } catch (error) {
       console.error("Error fetching base txs: ", error);
       // Consider handling errors in a user-visible way, such as resetting the badge.
