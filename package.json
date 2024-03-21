@@ -1,6 +1,6 @@
 {
   "name": "Base gas tracker",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Base gas tracker",
   "scripts": {
     "start": "webpack --watch --progress --config webpack.dev.js",
