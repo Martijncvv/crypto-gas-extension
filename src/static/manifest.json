@@ -1,22 +1,25 @@
 {
-  "name": "Base gas tracker",
-  "description": "Displays the most recent gas prices from the Base network at 10-minute intervals",
-  "version": "0.0.3",
+  "name": "ETH-native networks gas tracker",
+  "description": "Displays the most recent gas prices of different ETH-based networks at 10-minute intervals",
+  "version": "0.0.4",
   "manifest_version": 3,
   "icons": {
-    "16": "images/base-icon.png",
-    "48": "images/base-icon.png",
-    "128": "images/base-icon.png"
+    "16": "images/baseIcon.png",
+    "48": "images/baseIcon.png",
+    "128": "images/baseIcon.png"
   },
   "action": {
-    "default_title": "Base Mwei fees",
-    "default_icon": "images/base-icon.png"
+    "default_popup": "popup.html",
+    "default_title": "Fees in Mwei",
+    "default_icon": "images/baseIcon.png"
   },
   "host_permissions": [
-    "https://api.etherscan.io/"
+    "https://api.etherscan.io/",
+    "https://etherscan.io/"
   ],
   "permissions": [
-    "alarms"
+    "alarms",
+    "storage"
   ],
   "background": {
     "service_worker": "service_worker.js",

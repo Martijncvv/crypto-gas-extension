@@ -1,7 +1,7 @@
 {
-  "name": "Base gas tracker",
-  "version": "0.0.3",
-  "description": "Base gas tracker",
+  "name": "ETH-native networks gas tracker",
+  "version": "0.0.4",
+  "description": "ETH-native networks gas tracker",
   "scripts": {
     "start": "webpack --watch --progress --config webpack.dev.js",
     "build": "webpack --watch --progress --config webpack.prod.js"
