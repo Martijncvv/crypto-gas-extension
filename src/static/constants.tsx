@@ -28,6 +28,42 @@ export const NETWORKS = {
     color: [247, 4, 31, 255],
     src: "images/optimismIcon.png",
   },
+  scroll: {
+    // ##ffeeda
+    name: "Scroll",
+    domain: "api.scrollscan.com",
+    usdcContractAddress: "0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4",
+    color: [255, 238, 218, 255],
+    src: "images/scrollIcon.png",
+  },
+  zksync: {
+    // ##2e318b
+    name: "zkSync",
+    domain: "api-era.zksync.network",
+    usdcContractAddress: "0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4",
+    color: [46, 49, 139, 255],
+    src: "images/zksyncIcon.png",
+  },
+  // linea: {
+  //   // #5bd0ed
+  //   // https://docs.lineascan.build/getting-started/endpoint-urls
+  //   name: "Linea",
+  //   domain: "api.lineascan.build",
+  //   usdcContractAddress: "",
+  //   color: [91, 208, 237, 255],
+  //   src: "images/lineaIcon.png",
+  //   // TODO convert to 100px, usdc contract
+  // },
+  // blast: {
+  //   // ###FCFC03
+  //   // https://docs.blastscan.io/getting-started/endpoint-urls
+  //   name: "Blast",
+  //   domain: "api.blastscan.io",
+  //   usdcContractAddress: "",
+  //   color: [252, 252, 3, 255],
+  //   src: "images/blastIcon.png",
+  //   // TODO convert to 100px, usdc contract
+  // },
   // avalanche: {
   //   name: "Avalanche",
   //   domain: "api.snowtrace.io",
