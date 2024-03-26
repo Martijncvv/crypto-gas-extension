@@ -162,7 +162,6 @@ const NETWORKS = {
       if (response?.result?.length > 0) {
         // get average gas price from the txs
         response?.result?.forEach((tx) => {
-          console.log(tx.gasPrice);
           totalGasPrice += parseInt(tx.gasPrice);
           counter++;
         });
@@ -171,30 +170,38 @@ const NETWORKS = {
       let averageGasPrice = totalGasPrice / counter;
 
       // Display in Mwei, rounded down.
-      let averageGasPriceInMwei = Math.floor(
-        parseInt(averageGasPrice) / 1000_000,
-      );
+      let averageGasPriceInMwei = Math.floor(averageGasPrice / 1000_000);
       if (!averageGasPriceInMwei) {
         throw new Error("Gas price not found");
       }
 
-      console.log("averageGasPriceInMwei: ", averageGasPriceInMwei);
-
+      let formattedGasPrice = averageGasPriceInMwei.toString();
+      // FORMAT GAS PRICE
       if (averageGasPriceInMwei > 9999) {
-        averageGasPriceInMwei = `${Math.round(averageGasPriceInMwei / 1000)}k`;
+        formattedGasPrice = `${Math.round(averageGasPriceInMwei / 1000)}k`;
       } else if (averageGasPriceInMwei > 999) {
         let formattedPrice = (averageGasPriceInMwei / 1000).toFixed(1);
         if (formattedPrice.length > 3) {
-          averageGasPriceInMwei = `${Math.round(
-            averageGasPriceInMwei / 1000,
-          )}k`;
+          formattedGasPrice = `${Math.round(averageGasPriceInMwei / 1000)}k`;
         } else {
-          averageGasPriceInMwei = `${formattedPrice}k`;
+          formattedGasPrice = `${formattedPrice}k`;
         }
       }
 
-      chrome.action.setBadgeText({ text: `${averageGasPriceInMwei}` });
+      chrome.action.setBadgeText({ text: formattedGasPrice });
       chrome.action.setBadgeBackgroundColor({ color: networkConfig.color });
+      chrome.action.setIcon({ path: networkConfig.src });
+
+      // CHECK NOTIFICATION
+      const { gasMweiAlarm } = await chrome.storage.local.get("gasAmount");
+      if (gasMweiAlarm && averageGasPriceInMwei < gasMweiAlarm) {
+        chrome.notifications.create({
+          type: "basic",
+          iconUrl: networkConfig.src,
+          title: `Crypto Gas Tracker`,
+          message: `${networkConfig.name} average gas price: ${formattedGasPrice} Mwei`,
+        });
+      }
     } catch (error) {
       console.error("Error fetching base txs: ", error?.message);
     }

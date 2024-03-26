@@ -6,7 +6,13 @@ badge on the extension icon. This tool is invaluable for Ethereum enthusiasts, t
 an eye on gas prices for better transaction planning and cost estimation.
 
 <p align="center">
-  <img src="base-tracker-preview-128-128.png" alt="Pudgy USD" width="200" >
+  <img src="gas-tracker-preview-menu-640-400.png" alt="Pudgy USD" width="200" >
+</p>
+<p align="center">
+  <img src="base-tracker-preview-128-128.png" alt="preview icon" width="200" >
+</p>
+<p align="center">
+  <img src="notification-ethereum.png" alt="preview icon" width="200" >
 </p>
 
 ## Extensions
