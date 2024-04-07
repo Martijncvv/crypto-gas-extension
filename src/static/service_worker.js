@@ -145,6 +145,7 @@ const NETWORKS = {
 
       const networkConfig = NETWORKS[networkPref];
 
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       const res = await fetch(
         `https://${networkConfig.domain}/api?module=account&action=tokentx&contractaddress=${networkConfig.usdcContractAddress}&page=1&offset=30&startblock=0&endblock=99999999&sort=desc`,
       );
@@ -154,7 +155,19 @@ const NETWORKS = {
           `Fetch error, token txs, domain: ${networkConfig.domain}, contract${networkConfig.usdcContractAddress}, info: ${res.status} ${res.statusText}`,
         );
       }
-      const response = await res.json();
+      let response = await res.json();
+
+      if (
+        response?.result ===
+        "Max rate limit reached, please use API Key for higher rate limit"
+      ) {
+        console.log("Rate limit reached, retrying in 5050ms");
+        await new Promise((resolve) => setTimeout(resolve, 5050));
+        const res2 = await fetch(
+          `https://${networkConfig.domain}/api?module=account&action=tokentx&contractaddress=${networkConfig.usdcContractAddress}&page=1&offset=30&startblock=0&endblock=99999999&sort=desc`,
+        );
+        response = await res2.json();
+      }
 
       let totalGasPrice = 0;
       let counter = 0;
@@ -193,8 +206,8 @@ const NETWORKS = {
       chrome.action.setIcon({ path: networkConfig.src });
 
       // CHECK NOTIFICATION
-      const { gasMweiAlarm } = await chrome.storage.local.get("gasAmount");
-      if (gasMweiAlarm && averageGasPriceInMwei < gasMweiAlarm) {
+      const { gasAmount } = await chrome.storage.local.get("gasAmount");
+      if (gasAmount && averageGasPriceInMwei < gasAmount) {
         chrome.notifications.create({
           type: "basic",
           iconUrl: networkConfig.src,
@@ -203,7 +216,7 @@ const NETWORKS = {
         });
       }
     } catch (error) {
-      console.error("Error fetching base txs: ", error?.message);
+      console.error("Error fetching txs: ", error?.message);
     }
   }
 

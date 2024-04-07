@@ -3,7 +3,11 @@ import "./popup.css";
 import { createRoot } from "react-dom/client";
 import { NetworkPrefOptionButton } from "../components/NetwerkPrefOptionButton";
 import { NETWORKS } from "../static/constants";
-import { getMweiGasAlarm, getStorageNetworkPref } from "../utils/storage";
+import {
+  getMweiGasAlarm,
+  getStorageNetworkPref,
+  setMweiGasAlarm,
+} from "../utils/storage";
 
 const App: React.FC = () => {
   const [mweiAlarmInput, setMweiAlarmInput] = useState<number | undefined>();
@@ -20,7 +24,7 @@ const App: React.FC = () => {
 
   async function fetchAndDisplayGasPrice() {
     try {
-      let { networkPref } = await chrome.storage.local.get("networkPref");
+      let networkPref = await getStorageNetworkPref();
 
       if (!networkPref) {
         networkPref = "base";
@@ -29,7 +33,10 @@ const App: React.FC = () => {
 
       const networkConfig = NETWORKS[networkPref];
 
-      const res = await fetch(
+      chrome.action.setBadgeText({ text: "..." });
+      // delay 3 sec
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      let res = await fetch(
         `https://${networkConfig.domain}/api?module=account&action=tokentx&contractaddress=${networkConfig.usdcContractAddress}&page=1&offset=30&startblock=0&endblock=99999999&sort=desc`,
       );
 
@@ -38,7 +45,21 @@ const App: React.FC = () => {
           `Fetch error, token txs, domain: ${networkConfig.domain}, contract${networkConfig.usdcContractAddress}, info: ${res.status} ${res.statusText}`,
         );
       }
-      const response = await res.json();
+      let response = await res.json();
+
+      console.log("response: ", response);
+      if (
+        response?.result ===
+        "Max rate limit reached, please use API Key for higher rate limit"
+      ) {
+        console.log("Rate limit reached, retrying in 5050ms");
+        await new Promise((resolve) => setTimeout(resolve, 5050));
+        const res2 = await fetch(
+          `https://${networkConfig.domain}/api?module=account&action=tokentx&contractaddress=${networkConfig.usdcContractAddress}&page=1&offset=30&startblock=0&endblock=99999999&sort=desc`,
+        );
+        response = await res2.json();
+        console.log("response2: ", response);
+      }
 
       let totalGasPrice = 0;
       let counter = 0;
@@ -77,6 +98,17 @@ const App: React.FC = () => {
       chrome.action.setBadgeText({ text: formattedGasPrice });
       chrome.action.setBadgeBackgroundColor({ color: networkConfig.color });
       chrome.action.setIcon({ path: networkConfig.src });
+
+      // CHECK NOTIFICATION
+      // const gasMweiAlarm = await getMweiGasAlarm();
+      // if (gasMweiAlarm && averageGasPriceInMwei < gasMweiAlarm) {
+      //   chrome.notifications.create({
+      //     type: "basic",
+      //     iconUrl: networkConfig.src,
+      //     title: `Crypto Gas Tracker`,
+      //     message: `${networkConfig.name} average gas price: ${formattedGasPrice} Mwei`,
+      //   });
+      // }
     } catch (error) {
       console.error("Error fetching base txs: ", error?.message);
     }
@@ -115,6 +147,11 @@ const App: React.FC = () => {
     },
   };
 
+  const handleGasAlarmInput = (gasMweiAmount: number) => {
+    setMweiGasAlarm(gasMweiAmount);
+    setMweiAlarmInput(gasMweiAmount);
+  };
+
   return (
     <>
       {formattedNetworks.map((networkInfo) => (
@@ -136,9 +173,7 @@ const App: React.FC = () => {
           type="number"
           placeholder="Amount in Mwei"
           onChange={(e) => {
-            const gasAmount = parseInt(e.target.value);
-            chrome.storage.local.set({ gasAmount: gasAmount });
-            setMweiAlarmInput(gasAmount);
+            handleGasAlarmInput(parseInt(e.target.value));
           }}
           value={mweiAlarmInput}
           style={styles.mweiAlarmInputField}
